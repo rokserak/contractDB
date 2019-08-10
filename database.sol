@@ -35,11 +35,19 @@ contract database {
 
     //getters
     function get_number(int idd) public view returns (int) {
-        return list[idd].number;
+        if (!list[idd].is_deleted) {
+            return list[idd].number;
+        } else {
+            return 0;
+        }
     }
 
     function get_text(int idd) public view returns (string memory) {
-        return list[idd].text;
+        if (!list[idd].is_deleted) {
+            return list[idd].text;
+        } else {
+            return "";
+        }
     }
 
     //create - append
