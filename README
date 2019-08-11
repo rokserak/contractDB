@@ -1,1 +1,4 @@
 eth smart contract used as database
+
+web3 library doesnt work with python 3.7.4, pip install fails
+works fine with python 3.6.9 tho
