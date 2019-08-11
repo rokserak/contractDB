@@ -20,9 +20,11 @@ w3.eth.defaultAccount = address
 
 greeter = w3.eth.contract(abi=contract_abi, bytecode=contract_bytecode)
 
+# sent contract on blockchain
 tx_hash = greeter.constructor().transact()
 tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
+# save contract data in file
 contract_data = {
     'abi': contract_abi,
     'owner_address': w3.eth.defaultAccount,
