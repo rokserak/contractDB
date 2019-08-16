@@ -17,19 +17,19 @@ contract database {
     }
 
     //setters
-    function set_number(int idd, int x) internal {
+    function set_number(int idd, int x) public {
         if (!list[idd].is_deleted) {
             list[idd].number = x;
         }
     }
 
-    function set_text(int idd, string memory x) internal {
+    function set_text(int idd, string memory x) public {
         if (!list[idd].is_deleted) {
             list[idd].text = x;
         }
     }
 
-    function deleted(int idd) internal {
+    function deleted(int idd) public {
         list[idd].is_deleted = true;
     }
 
@@ -38,7 +38,7 @@ contract database {
         if (!list[idd].is_deleted) {
             return list[idd].number;
         } else {
-            return 0;
+            return -1;
         }
     }
 
@@ -46,7 +46,7 @@ contract database {
         if (!list[idd].is_deleted) {
             return list[idd].text;
         } else {
-            return "";
+            return "deleted";
         }
     }
 

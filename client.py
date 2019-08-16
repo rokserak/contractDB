@@ -34,3 +34,17 @@ class Client:
     def transaction(self, func, *args):
         tx_hash = self.interface.functions[func](*args).transact()
         return self.w3.eth.waitForTransactionReceipt(tx_hash)
+
+    # get whole list of data from contract
+    def get_all(self):
+        values = []
+        i = 0
+        while True:
+            number = self.call.get_number(i)
+            text = self.call.get_text(i)
+            if not number and not text:
+                break
+            if number != -1 and text != 'deleted':
+                values.append((i, number, text))
+            i += 1
+        return values
