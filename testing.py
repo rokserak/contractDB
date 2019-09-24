@@ -1,31 +1,56 @@
 from client import Client
+import unittest
 
 c = Client()
 
 
-def test1():
-    # functions that don't return
-    x = c.interface.functions.create(15, 'deset').transact()
-    print(x)
+class TestDatabase(unittest.TestCase):
+
+    # insert
+    def test1(self):
+        c.interface.functions.create(15, 'deset').transact()
+        db = c.get_all()
+        is_in = False
+        for i, num, text in db:
+            if num == 15 and text == 'deset':
+                is_in = True
+                break
+        self.assertTrue(is_in)
+
+    # delete
+    def test2(self):
+        c.interface.functions.create(10, 'a').transact()
+        db = c.get_all()
+        id = 0
+        for i, num, text in db:
+            if num == 10 and text == 'a':
+                id = i
+                break
+        c.transaction('deleted', id)
+
+        num = c.call.get_number(id)
+        text = c.call.get_text(id)
+        self.assertTrue(num == -1 and text == 'deleted')
+
+    # update
+    def test3(self):
+        c.transaction('create', 5, 'b')
+        db = c.get_all()
+        id = 0
+        for i, num, text in db:
+            if num == 5 and text == 'b':
+                id = i
+                break
+        self.assertTrue(id > 0)
+
+        c.transaction('set_number', id, 50)
+        c.transaction('set_text', id, 'ola')
+
+        num = c.call.get_number(id)
+        text = c.call.get_text(id)
+
+        self.assertTrue(num == 50 and text == 'ola')
 
 
-def test2():
-    x = c.interface.get_text(5)
-    print(x)
-
-
-def test3():
-    i = 0
-    while True:
-        x = c.call.get_number(i)
-        if x == 0:
-            return
-        print(i, x)
-        i += 1
-
-
-def test4():
-    print(c.transaction('create', 20, 'ssss'))
-
-
-test3()
+if __name__ == '__main__':
+    unittest.main()
